@@ -1,7 +1,7 @@
 ﻿// See https://aka.ms/new-console-template for more information
 public class Event
 {
-    public string title;
+    public string Title { get; set; }
     public DateTime date;
     public int maxCapacity;
     public int bookedSeats;
@@ -9,10 +9,15 @@ public class Event
 
     public Event(string title, DateTime date, int maxCapacity)
     {
-        this.title = CheckTitle(title);
+        this.Title = CheckTitle(title);
         this.date = CheckDate(date);
         this.maxCapacity = CheckCapacity(maxCapacity);
         this.bookedSeats = 0;
+
+        Console.WriteLine("Evento creato con successo!");
+        Console.WriteLine($"Titolo: {this.Title}");
+        Console.WriteLine($"Data: {this.date}");
+        Console.WriteLine($"Posti disponibili: {this.maxCapacity}");
     }
     #region DataControls
     public DateTime CheckDate(DateTime date)
@@ -21,7 +26,7 @@ public class Event
         int result = DateTime.Compare(today, date);
         if(result >= 0)
         {
-            throw new Exception();
+            throw new Exception("La data da te inserita é già passata!");
         }
 
         return date;
@@ -31,7 +36,7 @@ public class Event
     {
         if(title == null)
         {
-            throw new Exception();
+            throw new Exception("Non hai inserito un titolo per l'evento!");
         }
         return title;
     }
@@ -40,7 +45,7 @@ public class Event
     {
         if(maxCapacity <= 0)
         {
-            throw new Exception();
+            throw new Exception("Non puoi creae un evento che non ha posti disponibili!");
         }
         return maxCapacity;
     }
@@ -66,6 +71,8 @@ public class Event
             throw new Exception("Non ci sono abbastanza posti disponibili");
         }
         this.bookedSeats += bookedSeats;
+        Console.WriteLine("Posti prenotati con successo!");
+        PrintAvailableSeats();
     }
 
     //riduce i posti prenotati del numero di posti indicati come parametro.Se l’evento è già passato o non ci sono i posti da disdire sufficienti, deve sollevare un’eccezione.
@@ -83,12 +90,20 @@ public class Event
             throw new Exception("Stai cercando di disdire piú posti di quelli prenotati!");
         }
         this.bookedSeats -= seats;
+        PrintAvailableSeats();
     }
 
     public string FormatDateTitle()
     {
         string formatDate = this.date.ToString("dd/MM/yyyy");
-        string formatDateTitle = $"{formatDate} - {this.title}";
+        string formatDateTitle = $"{formatDate} - {this.Title}";
         return formatDateTitle; 
+    }
+
+    public void PrintAvailableSeats()
+    {
+        Console.WriteLine($"Posti totali: {this.maxCapacity}");
+        Console.WriteLine($"Posti prenotati: {this.bookedSeats}");
+        Console.WriteLine($"Posti ancora disponibili: {this.maxCapacity - this.bookedSeats}");
     }
 }
