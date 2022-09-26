@@ -93,7 +93,7 @@ public class Event
         PrintAvailableSeats();
     }
 
-    public string FormatDateTitle()
+    private string FormatDateTitle()
     {
         string formatDate = this.date.ToString("dd/MM/yyyy");
         string formatDateTitle = $"{formatDate} - {this.Title}";
